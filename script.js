@@ -1,175 +1,129 @@
-const canvas = document.getElementById("canvas")
+const canvas = document.getElementById("game")
 const ctx = canvas.getContext("2d")
 
-let birdY
-let velocity
+let birdY = 250
+let velocity = 0
 
 const gravity = 0.5
 const jump = -9
 
-let pipes
+let pipes = []
 const pipeWidth = 60
-const pipeGap = 170
+const pipeCap = 10
+const pipeGap = 180
 
-let score
-let gameRunning = false
+let score = 0
 
-let characterImg = new Image()
+let character = new Image()
 
-let animationId
-let pipeSpawner
-
-function startGame(name,img){
+function startGame(name, img){
 
 document.getElementById("menu").style.display="none"
-document.getElementById("game").style.display="block"
+canvas.style.display="block"
 
-document.getElementById("selected").innerText="Character: "+name
+character.src = img
 
-characterImg.src = img
+document.getElementById("music").play()
 
 resetGame()
-
-document.getElementById("bgMusic").play()
-
-gameRunning = true
 
 spawnPipe()
 
 update()
 
 }
-
 
 function resetGame(){
 
 birdY = 250
 velocity = 0
-
 pipes = []
-
 score = 0
 
-document.getElementById("gameOverScreen").style.display="none"
+document.getElementById("score").innerText="Score: 0"
 
 }
-
 
 function spawnPipe(){
 
-if(!gameRunning) return
-
-let topHeight = 80 + Math.random()*250
+let top = 60 + Math.random()*250
 
 pipes.push({
-x: canvas.width,
-top: topHeight,
-bottom: topHeight + pipeGap
+x: 400,
+top: top,
+bottom: top + pipeGap
 })
 
-pipeSpawner = setTimeout(spawnPipe,1800)
+setTimeout(spawnPipe, 2000)
 
 }
 
-
 function update(){
-
-if(!gameRunning) return
 
 velocity += gravity
 birdY += velocity
 
-ctx.clearRect(0,0,canvas.width,canvas.height)
+ctx.clearRect(0,0,400,600)
 
-if(characterImg.complete){
-
-ctx.drawImage(characterImg,80,birdY,40,40)
-
-}else{
-
-ctx.fillStyle="yellow"
-ctx.fillRect(80,birdY,40,40)
-
-}
-
-ctx.fillStyle="green"
+ctx.drawImage(character,80,birdY,40,40)
 
 pipes.forEach((pipe,i)=>{
 
 pipe.x -= 2
 
-ctx.fillRect(pipe.x,0,pipeWidth,pipe.top)
-ctx.fillRect(pipe.x,pipe.bottom,pipeWidth,canvas.height)
+drawPipe(pipe)
 
 if(
-
 80+40 > pipe.x &&
-80 < pipe.x + pipeWidth &&
+80 < pipe.x+pipeWidth &&
 (birdY < pipe.top || birdY+40 > pipe.bottom)
-
 ){
-gameOver()
+die()
 }
 
-if(pipe.x + pipeWidth < 0){
-
+if(pipe.x+pipeWidth < 0){
 pipes.splice(i,1)
 score++
-
+document.getElementById("score").innerText="Score: "+score
 }
 
 })
 
-ctx.fillStyle="white"
-ctx.font="24px Arial"
-ctx.fillText("Score: "+score,10,30)
-
-if(birdY>canvas.height-40 || birdY<0){
-gameOver()
+if(birdY > 560 || birdY < 0){
+die()
 }
 
-animationId = requestAnimationFrame(update)
+requestAnimationFrame(update)
 
 }
 
+function drawPipe(pipe){
 
-document.addEventListener("keydown",()=>{
-velocity = jump
-})
+ctx.fillStyle = "#22c55e"
 
-canvas.addEventListener("click",()=>{
-velocity = jump
-})
+/* top pipe body */
+ctx.fillRect(pipe.x,0,pipeWidth,pipe.top)
 
+/* top pipe cap */
+ctx.fillRect(pipe.x-5,pipe.top-pipeCap,pipeWidth+10,pipeCap)
 
-function gameOver(){
+/* bottom pipe body */
+ctx.fillRect(pipe.x,pipe.bottom,pipeWidth,600)
 
-gameRunning = false
-
-cancelAnimationFrame(animationId)
-
-clearTimeout(pipeSpawner)
-
-document.getElementById("bgMusic").pause()
-document.getElementById("deathSound").play()
-
-document.getElementById("finalScore").innerText="Score: "+score
-
-document.getElementById("gameOverScreen").style.display="flex"
+/* bottom pipe cap */
+ctx.fillRect(pipe.x-5,pipe.bottom,pipeWidth+10,pipeCap)
 
 }
 
+document.addEventListener("keydown",()=>velocity=jump)
+canvas.addEventListener("click",()=>velocity=jump)
 
-function restartGame(){
+function die(){
 
+document.getElementById("death").play()
+
+setTimeout(()=>{
 resetGame()
-
-document.getElementById("bgMusic").play()
-
-gameRunning = true
-
-spawnPipe()
-
-update()
+},1200)
 
 }
