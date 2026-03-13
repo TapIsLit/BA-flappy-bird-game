@@ -30,6 +30,7 @@ border:none;
 background:#3b82f6;
 color:white;
 cursor:pointer;
+transition: all 0.6s ease;
 }
 
 button:hover{
