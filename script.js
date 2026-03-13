@@ -1,22 +1,23 @@
 const canvas = document.getElementById("canvas")
 const ctx = canvas.getContext("2d")
 
-let birdY = 250
-let velocity = 0
+let birdY
+let velocity
 
 const gravity = 0.5
 const jump = -9
 
-let pipes = []
-
+let pipes
 const pipeWidth = 60
 const pipeGap = 170
-const pipeDistance = 260   // distance between pipes
 
-let score = 0
+let score
 let gameRunning = false
 
 let characterImg = new Image()
+
+let animationId
+let pipeSpawner
 
 function startGame(name,img){
 
@@ -27,9 +28,11 @@ document.getElementById("selected").innerText="Character: "+name
 
 characterImg.src = img
 
+resetGame()
+
 document.getElementById("bgMusic").play()
 
-gameRunning=true
+gameRunning = true
 
 spawnPipe()
 
@@ -38,26 +41,40 @@ update()
 }
 
 
+function resetGame(){
+
+birdY = 250
+velocity = 0
+
+pipes = []
+
+score = 0
+
+document.getElementById("gameOverScreen").style.display="none"
+
+}
+
+
 function spawnPipe(){
+
+if(!gameRunning) return
 
 let topHeight = 80 + Math.random()*250
 
 pipes.push({
-
-x:canvas.width,
-top:topHeight,
-bottom:topHeight + pipeGap
-
+x: canvas.width,
+top: topHeight,
+bottom: topHeight + pipeGap
 })
 
-setTimeout(spawnPipe, pipeDistance*4)
+pipeSpawner = setTimeout(spawnPipe,1800)
 
 }
 
 
 function update(){
 
-if(!gameRunning)return
+if(!gameRunning) return
 
 velocity += gravity
 birdY += velocity
@@ -91,9 +108,7 @@ if(
 (birdY < pipe.top || birdY+40 > pipe.bottom)
 
 ){
-
 gameOver()
-
 }
 
 if(pipe.x + pipeWidth < 0){
@@ -110,32 +125,30 @@ ctx.font="24px Arial"
 ctx.fillText("Score: "+score,10,30)
 
 if(birdY>canvas.height-40 || birdY<0){
-
 gameOver()
-
 }
 
-requestAnimationFrame(update)
+animationId = requestAnimationFrame(update)
 
 }
 
 
 document.addEventListener("keydown",()=>{
-
 velocity = jump
-
 })
 
 canvas.addEventListener("click",()=>{
-
 velocity = jump
-
 })
 
 
 function gameOver(){
 
-gameRunning=false
+gameRunning = false
+
+cancelAnimationFrame(animationId)
+
+clearTimeout(pipeSpawner)
 
 document.getElementById("bgMusic").pause()
 document.getElementById("deathSound").play()
@@ -149,16 +162,11 @@ document.getElementById("gameOverScreen").style.display="flex"
 
 function restartGame(){
 
-birdY=250
-velocity=0
-pipes=[]
-score=0
-
-document.getElementById("gameOverScreen").style.display="none"
+resetGame()
 
 document.getElementById("bgMusic").play()
 
-gameRunning=true
+gameRunning = true
 
 spawnPipe()
 
