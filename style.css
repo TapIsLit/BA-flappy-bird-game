@@ -21,8 +21,11 @@ margin:auto;
 }
 
 button{
-padding:10px;
-margin:5px;
+font-family: "Burbank", sans-serif;
+padding:14px 20px;
+margin:8px;
+font-size:18px;
+border-radius:8px;
 border:none;
 background:#3b82f6;
 color:white;
