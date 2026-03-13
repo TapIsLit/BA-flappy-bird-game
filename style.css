@@ -1,10 +1,18 @@
+@font-face{
+font-family: "Burbank";
+src: url("fonts/burbank.ttf") format("truetype");
+}
 body{
 background:#0f172a;
 color:white;
 font-family:Arial;
 text-align:center;
 }
-
+h2{
+font-family: "Burbank", sans-serif;
+font-size: 26px;
+letter-spacing: 1px;
+}
 canvas{
 background:#1e293b;
 border:3px solid white;
