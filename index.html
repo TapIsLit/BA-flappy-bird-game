@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+<title>Flappy Characters</title>
+<link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<h1>Flappy Characters</h1>
+
+<div id="menu">
+
+<h2>Common 💩</h2>
+<div class="character common" onclick="startGame('Kaz','images/kaz.png')">Kaz</div>
+
+<h2>Uncommon 🟦</h2>
+<div class="character uncommon" onclick="startGame('charlie boi','images/charlie.png')">charlie boi</div>
+<div class="character uncommon" onclick="startGame('spengy','images/spengy.png')">spengy</div>
+<div class="character uncommon" onclick="startGame('raganarakku','images/raganarakku.png')">raganarakku</div>
+<div class="character uncommon" onclick="startGame('Kenny','images/kenny.png')">Kenny</div>
+<div class="character uncommon" onclick="startGame('Clairri','images/clairri.png')">Clairri</div>
+<div class="character uncommon" onclick="startGame('LordHacker','images/lordhacker.png')">LordHacker</div>
+<div class="character uncommon" onclick="startGame('Jinn','images/jinn.png')">Jinn</div>
+
+<h2>Epic 💜</h2>
+<div class="character epic" onclick="startGame('Xot','images/xot.png')">Xot</div>
+<div class="character epic" onclick="startGame('Ninja','images/ninja.png')">Ninja</div>
+<div class="character epic" onclick="startGame('Shariff','images/shariff.png')">Shariff</div>
+<div class="character epic" onclick="startGame('Nekoshi','images/nekoshi.png')">Nekoshi</div>
+<div class="character epic" onclick="startGame('BloodxGoth','images/bloodxgoth.png')">BloodxGoth</div>
+<div class="character epic" onclick="startGame('Ace','images/ace.png')">Ace</div>
+
+<h2>Legendary 🟡</h2>
+<div class="character legendary" onclick="startGame('Alexa','images/alexa.png')">Alexa</div>
+<div class="character legendary" onclick="startGame('Phantom','images/phantom.png')">Phantom</div>
+<div class="character legendary" onclick="startGame('MrAsaf','images/mrasaf.png')">MrAsaf</div>
+<div class="character legendary" onclick="startGame('Mono','images/mono.png')">Mono</div>
+
+<h2>Mythic ❤️</h2>
+<div class="character mythic" onclick="startGame('Frosty','images/frosty.png')">Frosty</div>
+<div class="character mythic" onclick="startGame('TapIsGay','images/tapisgay.png')">TapIsGay</div>
+
+<h2>Gods Chosen Emperors</h2>
+<div class="character gods" onclick="startGame('vitality','images/vitality.png')">vitality 💙</div>
+<div class="character gods" onclick="startGame('Clicky','images/clicky.png')">Clicky 🖤</div>
+
+<h2>Eternal</h2>
+<div class="character eternal" onclick="startGame('Leo','images/leo.png')">Leo ⚪</div>
+
+</div>
+
+<div id="game">
+
+<h2 id="selected"></h2>
+
+<canvas id="canvas" width="400" height="500"></canvas>
+
+</div>
+
+<!-- AUDIO PLACEHOLDERS -->
+
+<audio id="bgMusic" loop>
+<source src="sounds/music.mp3" type="audio/mpeg">
+</audio>
+
+<audio id="deathSound">
+<source src="sounds/death.mp3" type="audio/mpeg">
+</audio>
+
+<script src="script.js"></script>
+
+</body>
+</html>
